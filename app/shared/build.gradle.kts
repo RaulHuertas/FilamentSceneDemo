@@ -1,5 +1,10 @@
+import org.gradle.kotlin.dsl.androidMain
+import org.gradle.kotlin.dsl.commonMain
+import org.gradle.kotlin.dsl.commonTest
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.idea.proto.com.google.protobuf.api
+import org.jetbrains.kotlin.gradle.internal.platform.wasm.WasmPlatforms.wasmJs
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -9,6 +14,7 @@ plugins {
 }
 
 kotlin {
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -19,6 +25,7 @@ kotlin {
         }
     }
 
+    jvmToolchain(22)
     jvm()
 
     js {
@@ -36,7 +43,7 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
 
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
+            jvmTarget = JvmTarget.JVM_22
         }
         androidResources {
             enable = true
