@@ -28,6 +28,10 @@ options:
 - Desktop app:
     - Hot reload: `./gradlew :app:desktopApp:hotRun --auto`
     - Standard run: `./gradlew :app:desktopApp:run`
+    - Export runnable JAR: `./gradlew :app:desktopApp:packageUberJarForCurrentOS`
+        - Output: `app/desktopApp/build/compose/jars/com.rhuertas.filamentscenedemo-<os>-<arch>-1.0.0.jar`
+        - Requires JDK 22 or newer
+        - Run with: `java -jar <jar-file>`
 - Server: `./gradlew :server:run`
 - Web app:
     - Wasm target (faster, modern browsers): `./gradlew :app:webApp:wasmJsBrowserDevelopmentRun`

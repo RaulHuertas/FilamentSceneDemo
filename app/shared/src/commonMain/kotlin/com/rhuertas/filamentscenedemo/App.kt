@@ -18,32 +18,32 @@ import org.jetbrains.compose.resources.painterResource
 
 import filamentscenedemo.app.shared.generated.resources.Res
 import filamentscenedemo.app.shared.generated.resources.compose_multiplatform
+import io.github.erkko68.filament.compose.FilamentSceneView
+import io.github.erkko68.filament.compose.scene.Bloom
+import io.github.erkko68.filament.compose.scene.DirectionalLight
+import io.github.erkko68.filament.compose.scene.GltfInstance
+import io.github.erkko68.filament.compose.scene.LightIntensity
+import io.github.erkko68.filament.compose.scene.LinearColor
+import io.github.erkko68.filament.compose.scene.Position
+import io.github.erkko68.filament.compose.scene.PostProcessing
+import io.github.erkko68.filament.compose.scene.SkyboxSource
+import io.github.erkko68.filament.compose.scene.rememberCameraState
+import io.github.erkko68.filament.compose.scene.rememberGltfAsset
+import io.github.erkko68.filament.compose.scene.rememberSkyboxState
+import io.github.erkko68.filament.compose.scene.Direction
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .safeContentPadding()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        FilamentSceneView(
+            modifier       = Modifier.fillMaxSize(),
+            cameraState    = rememberCameraState(initialEye = Position(0f, 1f, 4f)),
+            skyboxState    = rememberSkyboxState(SkyboxSource.Color(LinearColor(0.1f, 0.12f, 0.15f))),
+            postProcessing = PostProcessing(bloom = Bloom(strength = 0.2f)),
         ) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
-                }
-            }
+            DirectionalLight(direction = Direction(0.3f, -1f, -0.5f), intensity = LightIntensity.LuminousPower(100_000f))
+            GltfInstance(asset = rememberGltfAsset { Res.readBytes("files/Duck.glb") })
         }
     }
 }
